@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { User, IUser } from '../models/userModel';
+import { User } from '../models/userModel';
 import { AppError } from '../middleware/errorHandler';
 import crypto from 'crypto';
 import { Document, Types } from 'mongoose';
@@ -57,7 +57,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
   }
 };
 
-export const login = async (req: Request, res: Response, next: NextFunction) => {
+export const signin = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email, password } = req.body;
 

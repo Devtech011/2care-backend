@@ -10,7 +10,6 @@ export const encrypt = (text: string): string => {
   const iv = crypto.randomBytes(IV_LENGTH);
   const salt = crypto.randomBytes(SALT_LENGTH);
   
-  // Create key using salt
   const key = crypto.pbkdf2Sync(ENCRYPTION_KEY, salt, 100000, 32, 'sha256');
   
   const cipher = crypto.createCipheriv(ALGORITHM, key, iv);
@@ -18,20 +17,17 @@ export const encrypt = (text: string): string => {
   
   const tag = cipher.getAuthTag();
   
-  // Combine IV, salt, tag, and encrypted data
   return Buffer.concat([salt, iv, tag, encrypted]).toString('base64');
 };
 
 export const decrypt = (encryptedData: string): string => {
   const buffer = Buffer.from(encryptedData, 'base64');
   
-  // Extract the salt, IV, tag, and encrypted data
   const salt = buffer.subarray(0, SALT_LENGTH);
   const iv = buffer.subarray(SALT_LENGTH, SALT_LENGTH + IV_LENGTH);
   const tag = buffer.subarray(SALT_LENGTH + IV_LENGTH, SALT_LENGTH + IV_LENGTH + TAG_LENGTH);
   const encrypted = buffer.subarray(SALT_LENGTH + IV_LENGTH + TAG_LENGTH);
   
-  // Recreate key using salt
   const key = crypto.pbkdf2Sync(ENCRYPTION_KEY, salt, 100000, 32, 'sha256');
   
   const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
