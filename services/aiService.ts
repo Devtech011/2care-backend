@@ -42,7 +42,7 @@ export const getAISummary = async (text: string, apiKey: string): Promise<string
 
     ${text}
     `;
-
+   
   const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -50,7 +50,7 @@ export const getAISummary = async (text: string, apiKey: string): Promise<string
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: 'google/gemma-3-12b-it:free',
+      model: 'deepseek/deepseek-chat-v3-0324:free',
       messages: [
         {
           role: 'user',
@@ -60,6 +60,7 @@ export const getAISummary = async (text: string, apiKey: string): Promise<string
       max_tokens: 1000,
     }),
   });
+
   if (!response.ok) {
     const errorData = await response.json().catch(() => null) as ErrorResponse | null;
     const errorMessage = errorData?.error?.message || errorData?.message || await response.text();
